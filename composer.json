@@ -20,20 +20,20 @@
     "repositories": [
         {
             "type": "git",
-            "url": "https://github.com/padosoft/laravel-activitylog"
+            "url": "https://github.com/padosoft/laravel-activitylog-extended"
         },
         {
             "type": "git",
-            "url": "https://github.com/padosoft/laravel-permission"
+            "url": "https://github.com/padosoft/laravel-permission-extended"
         }
     ],
     "require": {
         "php": ">=7.0.0",
-		"spatie/laravel-activitylog": "dev-mongoAndRelations",
-		"spatie/laravel-permission": "dev-withEvents",
-		"laravel/framework": "5.6.*|5.7.*",
+		"laravel/framework": "5.8.*",
         "nexmo/client": "^1.3",
-        "guzzlehttp/guzzle": "^6.3"
+        "guzzlehttp/guzzle": "^6.3",
+        "padosoft/laravel-permission-extended": "^1.0",
+        "padosoft/laravel-activitylog-extended": "^1.0"
     },
     "require-dev": {
         "mockery/mockery": "^1.0",

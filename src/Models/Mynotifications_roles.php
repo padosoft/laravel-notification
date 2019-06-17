@@ -3,7 +3,7 @@
 namespace Padosoft\Laravel\Notification\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Permission\Models\Role;
+use Padosoft\Laravel\PermissionExtended\Models\Role;
 
 class Mynotifications_roles extends Model
 {

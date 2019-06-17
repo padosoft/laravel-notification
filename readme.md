@@ -6,24 +6,11 @@ System for managing Laravel Notifications via database.
 
 
 ## Installation 
-
-1. add to your composer json in the repository section like this
-
-
-		"repositories": [
-        {
-            "type": "git",
-            "url": "https://gitlab.com/padosoftcms/laravel-notification"
-        }
-    ]
+This package can be used in Laravel 5.8 or higher.
+For previus version or Laravel please check v 1.* of this package
     
-2. `composer require padosoft/laravel-notification`
-3. Publish the config file by running `php artisan vendor:publish --provider="Padosoft\Laravel\Notification\NotificationServiceProvider" --tag="migrations"`. 
-
-## Installation - Laravel < 5.5
-
-4. Add `Padosoft\Laravel\Notification\NotificationServiceProvider` to the array of providers in `config/app.php`.
-5. Add `'NotificationManager' => 'Padosoft\Laravel\Notification\NotificationFacade'` to the array of aliases in `config/app.php`.
+1. `composer require padosoft/laravel-notification`
+2. Publish the config file by running `php artisan vendor:publish --provider="Padosoft\Laravel\Notification\NotificationServiceProvider" --tag="migrations"`. 
 
 ##Config
 If you want you can publish also the config of the package

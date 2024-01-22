@@ -3,8 +3,6 @@
 namespace Padosoft\Laravel\Notification;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\NexmoMessage;
-use Illuminate\Notifications\Messages\SlackMessage;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
@@ -85,45 +83,6 @@ class BaseNotification extends Notification
         ];
     }
 
-    /**
-     * Get the Nexmo / SMS representation of the notification.
-     *
-     * @param  mixed $notifiable
-     *
-     * @return NexmoMessage
-     */
-    public function toNexmo($notifiable)
-    {
-        $unicode = (strlen($this->notification_message) != strlen(utf8_decode($this->notification_message)));
-        $message = (new NexmoMessage)
-            ->content($this->notification_message);
-        $sender = config('padosoft-notification.sms_sender') != '' ?: config('services.nexmo.sms_from');
-        if ($sender != '') {
-            $message->from($sender);
-        }
-
-        return ($unicode) ? $message->unicode() : $message;
-
-    }
-
-    /**
-     * Get the Slack representation of the notification.
-     *
-     * @param  mixed  $notifiable
-     * @return SlackMessage
-     */
-    public function toSlack($notifiable)
-    {
-        $message=(new SlackMessage)->info();
-        if (config('padosoft-notification.slack.sender')!=''){
-            $message->from(config('padosoft-notification.slack.sender'), config('padosoft-notification.slack.sender_icon'));
-        }else{
-            $message->from(config('app.name'), ':robot_face:');
-        }
-
-        $message->content($this->notification_message);
-        return $message;
-    }
 
     public function toArray($notifiable)
     {

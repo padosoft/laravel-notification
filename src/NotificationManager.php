@@ -22,10 +22,6 @@ class NotificationManager implements ShouldQueue
 
     protected $notification_message;
     protected $notification;
-    protected $nexmo_client        = null;
-    protected $nexmo_balance       = false;
-    protected $nexmo_check_balance = false;
-
     /**
      * The number of times the job may be attempted.
      *
@@ -39,39 +35,10 @@ class NotificationManager implements ShouldQueue
         $this->notification_message = $notification;
     }
 
-    protected function checkNexmoBalance()
-    {
-        if ($this->nexmo_check_balance) {
-            return $this->nexmo_balance;
-        }
-        if ($this->nexmo_client === null) {
-            $this->nexmo_client = new \Nexmo\Client(new \Nexmo\Client\Credentials\Basic(config('services.nexmo.key'),
-                config('services.nexmo.secret')));
-        }
-        $balance = $this->nexmo_client->account()->getBalance();
-        $this->nexmo_check_balance = true;
-        if (is_object($balance) && ($balance->getBalance() > 0 || $balance->getAutoreload())) {
-            $this->nexmo_balance = true;
-        }
-
-        return $this->nexmo_balance;
-    }
-
     protected function setNotificationChannels(array $methods, $notifications)
     {
         if (!is_a($this->notification_message, BaseNotification::class)) {
-            $methods = $this->notification_message->via();
-        }
-        $nexmo_balance = false;
-        if (in_array('nexmo', $methods)) {
-            $nexmo_balance = $this->checkNexmoBalance();
-        }
-        //se non ho credito nexmo rimuovo la notifica
-        if (!$nexmo_balance && in_array('nexmo', $methods)) {
-            $methods = array_diff($methods, ['nexmo']);
-            activity()->performedOn($notifications)->withProperties([
-                'info' => 'no nexmo balance available'
-            ])->log('warning');
+            $methods = $this->notification_message->via($notifications);
         }
 
         if (is_a($this->notification_message, BaseNotification::class)) {
@@ -152,11 +119,11 @@ class NotificationManager implements ShouldQueue
     /**
      * The job failed to process.
      *
-     * @param  Exception $exception
+     * @param \Exception $exception
      *
      * @return void
      */
-    public function failed(Exception $exception)
+    public function failed(\Exception $exception)
     {
         // Send user notification of failure, etc...
         if (config('padosoft-notification.audit.failed') && $this->notification->audit_active == 1) {
